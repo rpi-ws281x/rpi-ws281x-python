@@ -70,12 +70,22 @@ except AttributeError:
 
 
 WS2811_TARGET_FREQ = _rpi_ws281x.WS2811_TARGET_FREQ
+SK6812_STRIP_RGBW = _rpi_ws281x.SK6812_STRIP_RGBW
+SK6812_STRIP_RBGW = _rpi_ws281x.SK6812_STRIP_RBGW
+SK6812_STRIP_GRBW = _rpi_ws281x.SK6812_STRIP_GRBW
+SK6812_STRIP_GBRW = _rpi_ws281x.SK6812_STRIP_GBRW
+SK6812_STRIP_BRGW = _rpi_ws281x.SK6812_STRIP_BRGW
+SK6812_STRIP_BGRW = _rpi_ws281x.SK6812_STRIP_BGRW
+SK6812_SHIFT_WMASK = _rpi_ws281x.SK6812_SHIFT_WMASK
 WS2811_STRIP_RGB = _rpi_ws281x.WS2811_STRIP_RGB
 WS2811_STRIP_RBG = _rpi_ws281x.WS2811_STRIP_RBG
 WS2811_STRIP_GRB = _rpi_ws281x.WS2811_STRIP_GRB
 WS2811_STRIP_GBR = _rpi_ws281x.WS2811_STRIP_GBR
 WS2811_STRIP_BRG = _rpi_ws281x.WS2811_STRIP_BRG
 WS2811_STRIP_BGR = _rpi_ws281x.WS2811_STRIP_BGR
+WS2812_STRIP = _rpi_ws281x.WS2812_STRIP
+SK6812_STRIP = _rpi_ws281x.SK6812_STRIP
+SK6812W_STRIP = _rpi_ws281x.SK6812W_STRIP
 class ws2811_channel_t(_object):
     __swig_setmethods__ = {}
     __setattr__ = lambda self, name, value: _swig_setattr(self, ws2811_channel_t, name, value)
@@ -91,15 +101,27 @@ class ws2811_channel_t(_object):
     __swig_setmethods__["count"] = _rpi_ws281x.ws2811_channel_t_count_set
     __swig_getmethods__["count"] = _rpi_ws281x.ws2811_channel_t_count_get
     if _newclass:count = _swig_property(_rpi_ws281x.ws2811_channel_t_count_get, _rpi_ws281x.ws2811_channel_t_count_set)
-    __swig_setmethods__["brightness"] = _rpi_ws281x.ws2811_channel_t_brightness_set
-    __swig_getmethods__["brightness"] = _rpi_ws281x.ws2811_channel_t_brightness_get
-    if _newclass:brightness = _swig_property(_rpi_ws281x.ws2811_channel_t_brightness_get, _rpi_ws281x.ws2811_channel_t_brightness_set)
     __swig_setmethods__["strip_type"] = _rpi_ws281x.ws2811_channel_t_strip_type_set
     __swig_getmethods__["strip_type"] = _rpi_ws281x.ws2811_channel_t_strip_type_get
     if _newclass:strip_type = _swig_property(_rpi_ws281x.ws2811_channel_t_strip_type_get, _rpi_ws281x.ws2811_channel_t_strip_type_set)
     __swig_setmethods__["leds"] = _rpi_ws281x.ws2811_channel_t_leds_set
     __swig_getmethods__["leds"] = _rpi_ws281x.ws2811_channel_t_leds_get
     if _newclass:leds = _swig_property(_rpi_ws281x.ws2811_channel_t_leds_get, _rpi_ws281x.ws2811_channel_t_leds_set)
+    __swig_setmethods__["brightness"] = _rpi_ws281x.ws2811_channel_t_brightness_set
+    __swig_getmethods__["brightness"] = _rpi_ws281x.ws2811_channel_t_brightness_get
+    if _newclass:brightness = _swig_property(_rpi_ws281x.ws2811_channel_t_brightness_get, _rpi_ws281x.ws2811_channel_t_brightness_set)
+    __swig_setmethods__["wshift"] = _rpi_ws281x.ws2811_channel_t_wshift_set
+    __swig_getmethods__["wshift"] = _rpi_ws281x.ws2811_channel_t_wshift_get
+    if _newclass:wshift = _swig_property(_rpi_ws281x.ws2811_channel_t_wshift_get, _rpi_ws281x.ws2811_channel_t_wshift_set)
+    __swig_setmethods__["rshift"] = _rpi_ws281x.ws2811_channel_t_rshift_set
+    __swig_getmethods__["rshift"] = _rpi_ws281x.ws2811_channel_t_rshift_get
+    if _newclass:rshift = _swig_property(_rpi_ws281x.ws2811_channel_t_rshift_get, _rpi_ws281x.ws2811_channel_t_rshift_set)
+    __swig_setmethods__["gshift"] = _rpi_ws281x.ws2811_channel_t_gshift_set
+    __swig_getmethods__["gshift"] = _rpi_ws281x.ws2811_channel_t_gshift_get
+    if _newclass:gshift = _swig_property(_rpi_ws281x.ws2811_channel_t_gshift_get, _rpi_ws281x.ws2811_channel_t_gshift_set)
+    __swig_setmethods__["bshift"] = _rpi_ws281x.ws2811_channel_t_bshift_set
+    __swig_getmethods__["bshift"] = _rpi_ws281x.ws2811_channel_t_bshift_get
+    if _newclass:bshift = _swig_property(_rpi_ws281x.ws2811_channel_t_bshift_get, _rpi_ws281x.ws2811_channel_t_bshift_set)
     def __init__(self): 
         this = _rpi_ws281x.new_ws2811_channel_t()
         try: self.this.append(this)
@@ -139,6 +161,22 @@ class ws2811_t(_object):
 ws2811_t_swigregister = _rpi_ws281x.ws2811_t_swigregister
 ws2811_t_swigregister(ws2811_t)
 
+WS2811_SUCCESS = _rpi_ws281x.WS2811_SUCCESS
+WS2811_ERROR_GENERIC = _rpi_ws281x.WS2811_ERROR_GENERIC
+WS2811_ERROR_OUT_OF_MEMORY = _rpi_ws281x.WS2811_ERROR_OUT_OF_MEMORY
+WS2811_ERROR_HW_NOT_SUPPORTED = _rpi_ws281x.WS2811_ERROR_HW_NOT_SUPPORTED
+WS2811_ERROR_MEM_LOCK = _rpi_ws281x.WS2811_ERROR_MEM_LOCK
+WS2811_ERROR_MMAP = _rpi_ws281x.WS2811_ERROR_MMAP
+WS2811_ERROR_MAP_REGISTERS = _rpi_ws281x.WS2811_ERROR_MAP_REGISTERS
+WS2811_ERROR_GPIO_INIT = _rpi_ws281x.WS2811_ERROR_GPIO_INIT
+WS2811_ERROR_PWM_SETUP = _rpi_ws281x.WS2811_ERROR_PWM_SETUP
+WS2811_ERROR_MAILBOX_DEVICE = _rpi_ws281x.WS2811_ERROR_MAILBOX_DEVICE
+WS2811_ERROR_DMA = _rpi_ws281x.WS2811_ERROR_DMA
+WS2811_ERROR_ILLEGAL_GPIO = _rpi_ws281x.WS2811_ERROR_ILLEGAL_GPIO
+WS2811_ERROR_PCM_SETUP = _rpi_ws281x.WS2811_ERROR_PCM_SETUP
+WS2811_ERROR_SPI_SETUP = _rpi_ws281x.WS2811_ERROR_SPI_SETUP
+WS2811_ERROR_SPI_TRANSFER = _rpi_ws281x.WS2811_ERROR_SPI_TRANSFER
+WS2811_RETURN_STATE_COUNT = _rpi_ws281x.WS2811_RETURN_STATE_COUNT
 
 def ws2811_init(*args):
   return _rpi_ws281x.ws2811_init(*args)
@@ -155,6 +193,10 @@ ws2811_render = _rpi_ws281x.ws2811_render
 def ws2811_wait(*args):
   return _rpi_ws281x.ws2811_wait(*args)
 ws2811_wait = _rpi_ws281x.ws2811_wait
+
+def ws2811_get_return_t_str(*args):
+  return _rpi_ws281x.ws2811_get_return_t_str(*args)
+ws2811_get_return_t_str = _rpi_ws281x.ws2811_get_return_t_str
 
 def ws2811_led_get(*args):
   return _rpi_ws281x.ws2811_led_get(*args)

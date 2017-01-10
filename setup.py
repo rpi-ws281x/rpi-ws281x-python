@@ -9,7 +9,8 @@ class CustomInstallCommand(build_py):
     """Customized install to run library Makefile"""
     def run(self):
         print("Compiling ws281x library...")
-        subprocess.Popen(["make"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        proc =subprocess.Popen(["make"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print(proc.stderr.read())
         build_py.run(self)
 
 setup(name              = 'rpi_ws281x',
