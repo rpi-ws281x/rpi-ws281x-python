@@ -1,0 +1,4 @@
+[submodule "lib"]
+	path = lib
+	url = http://github.com/jgarff/rpi_ws281x
+	branch = dev
