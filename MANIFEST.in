@@ -1,5 +1,7 @@
 include lib/*
+include version.h
 include setup.py
 include rpi_ws281x_wrap.c
 include neopixel.py
 include README.md
+include LICENSE
