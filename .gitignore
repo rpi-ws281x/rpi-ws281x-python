@@ -1,0 +1,17 @@
+build/
+*.o
+*.so
+*.a
+*.pyc
+*.egg-info
+*.egg
+*.deb
+*.dsc
+*.build
+*.changes
+*.orig.*
+packaging/*tar.xz
+library/debian/
+dist/
+__pycache__
+.DS_Store

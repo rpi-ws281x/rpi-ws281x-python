@@ -1,12 +1,17 @@
-.PHONY: clean build install
+.PHONY: clean lib
 
-all: clean build
+BUILD = lib
+OBJECTS = $(BUILD)/ws2811.o $(BUILD)/rpihw.o $(BUILD)/pwm.o $(BUILD)/dma.o $(BUILD)/mailbox.o
+LIB = libws2811.a
 
-install:
-	sudo ./setup.py install
+all: $(BUILD)/$(LIB)
 
-build:
-	sudo ./setup.py build
+$(OBJECTS): $(BUILD)/%.o : $(BUILD)/%.c
+	gcc $< -o $@ -c -g -O2 -Wall -Werror -fPIC
+
+$(BUILD)/$(LIB): $(OBJECTS)
+	ar rc $@ $^
+	ranlib $@
 
 clean:
-	sudo rm -rf build
+	-rm -f $(BUILD)/*.o $(BUILD)/$(LIB)
