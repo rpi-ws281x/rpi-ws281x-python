@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # Python wrapper for the rpi_ws281x library.
-# Author: Tony DiCola (tony@tonydicola.com)
+# Authors:
+#    Phil Howard (phil@pimoroni.com) 
+#    Tony DiCola (tony@tonydicola.com)
+
 from setuptools import setup, find_packages, Extension
 from setuptools.command.build_py import build_py
 import subprocess
@@ -14,10 +17,10 @@ class CustomInstallCommand(build_py):
         build_py.run(self)
 
 setup(name              = 'rpi_ws281x',
-      version           = '2.0.3',
-      author            = 'Jeremy Garff',
+      version           = '3.0.0',
+      author            = 'Jeremy Garff <jer@jers.net>, Phil Howard <phil@pimoroni.com>',
       author_email      = 'jer@jers.net',
-      description       = 'Userspace Raspberry Pi PWM library for WS281X LEDs.',
+      description       = 'Userspace Raspberry Pi PWM/PCM/SPI library for SK6812 and WS281X LEDs.',
       license           = 'MIT',
       url               = 'https://github.com/pimoroni/rpi_ws281x-python/',
       cmdclass          = {'build_py':CustomInstallCommand},
