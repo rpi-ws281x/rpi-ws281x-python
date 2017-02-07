@@ -1,7 +1,7 @@
 .PHONY: clean lib
 
 BUILD = lib
-OBJECTS = $(BUILD)/ws2811.o $(BUILD)/rpihw.o $(BUILD)/pwm.o $(BUILD)/dma.o $(BUILD)/mailbox.o
+OBJECTS = $(BUILD)/ws2811.o $(BUILD)/rpihw.o $(BUILD)/pcm.o $(BUILD)/pwm.o $(BUILD)/dma.o $(BUILD)/mailbox.o
 LIB = libws2811.a
 
 all: $(BUILD)/version.h $(BUILD)/$(LIB)

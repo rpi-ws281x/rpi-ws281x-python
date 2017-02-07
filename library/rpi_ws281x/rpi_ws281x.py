@@ -48,9 +48,9 @@ class _LED_Data(object):
 			return ws.ws2811_led_set(self.channel, pos, value)
 
 
-class Adafruit_NeoPixel(object):
+class PixelStrip(object):
 	def __init__(self, num, pin, freq_hz=800000, dma=5, invert=False, brightness=128, channel=0):
-		"""Class to represent a NeoPixel/WS281x LED display.  Num should be the
+		"""Class to represent a SK6812/WS281x LED display.  Num should be the
 		number of pixels in the display, and pin should be the GPIO pin connected
 		to the display signal line (must be a PWM pin like 18!).  Optional
 		parameters are freq, the frequency of the display signal in hertz (default
@@ -161,3 +161,6 @@ class Adafruit_NeoPixel(object):
 		setattr(c, 'g', self._led_data[n] >> 8  & 0xff)	
 		setattr(c, 'b', self._led_data[n]	& 0xff)
 		return c
+
+class AdafruitNeoPixel(PixelStrip):
+    pass
