@@ -162,5 +162,5 @@ class PixelStrip(object):
 		setattr(c, 'b', self._led_data[n]	& 0xff)
 		return c
 
-class AdafruitNeoPixel(PixelStrip):
+class Adafruit_NeoPixel(PixelStrip):
     pass
