@@ -28,5 +28,5 @@ setup(name              = 'rpi_ws281x',
       ext_modules       = [Extension('_rpi_ws281x', 
                                      sources=['rpi_ws281x_wrap.c'],
                                      include_dirs=['lib/'],
-                                     library_dirs=['lib/'],
+                                     library_dirs=['lib-built/'],
                                      libraries=['ws2811'])])
