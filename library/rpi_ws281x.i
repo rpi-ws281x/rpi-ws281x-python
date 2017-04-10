@@ -10,6 +10,38 @@
 %include "stdint.i"
 %include "carrays.i"
 
+%typemap(out) uint8_t [256] {
+  $result = PyList_New(256);
+  int x;
+  for(x = 0; x < 256; x++){
+    PyList_SetItem($result, x, PyInt_FromLong($1[x]));
+  }
+}
+
+%typemap(in) uint8_t [256] {
+    uint8_t *temp = (uint8_t *)malloc(256 * sizeof(uint8_t));
+
+    if (PyList_Check($input) && PyList_Size($input) == 256)
+    {
+        int x;
+        for (x = 0; x < 256; x++) {
+            PyObject *obj = PyList_GetItem($input, x);
+            if (PyInt_Check(obj)) {
+                temp[x] = (uint8_t)PyInt_AsLong(obj);
+            }
+            else
+            {
+                SWIG_exception_fail(SWIG_TypeError, "Expected list of 256 integer gamma values in $symname");
+            }
+        }
+        $1 = &temp[0];
+    }
+    else
+    {
+        SWIG_exception_fail(SWIG_TypeError, "Expected list of 256 gamma integer values in $symname");
+    }
+};
+
 // Declare functions which will be exported as anything in the ws2811.h header.
 %{
 #include "lib/ws2811.h"

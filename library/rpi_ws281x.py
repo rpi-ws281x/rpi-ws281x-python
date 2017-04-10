@@ -122,6 +122,9 @@ class ws2811_channel_t(_object):
     __swig_setmethods__["bshift"] = _rpi_ws281x.ws2811_channel_t_bshift_set
     __swig_getmethods__["bshift"] = _rpi_ws281x.ws2811_channel_t_bshift_get
     if _newclass:bshift = _swig_property(_rpi_ws281x.ws2811_channel_t_bshift_get, _rpi_ws281x.ws2811_channel_t_bshift_set)
+    __swig_setmethods__["gamma"] = _rpi_ws281x.ws2811_channel_t_gamma_set
+    __swig_getmethods__["gamma"] = _rpi_ws281x.ws2811_channel_t_gamma_get
+    if _newclass:gamma = _swig_property(_rpi_ws281x.ws2811_channel_t_gamma_get, _rpi_ws281x.ws2811_channel_t_gamma_set)
     def __init__(self): 
         this = _rpi_ws281x.new_ws2811_channel_t()
         try: self.this.append(this)

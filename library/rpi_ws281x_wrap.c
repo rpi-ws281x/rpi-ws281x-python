@@ -3826,6 +3826,87 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_ws2811_channel_t_gamma_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  ws2811_channel_t *arg1 = (ws2811_channel_t *) 0 ;
+  uint8_t *arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:ws2811_channel_t_gamma_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_ws2811_channel_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ws2811_channel_t_gamma_set" "', argument " "1"" of type '" "ws2811_channel_t *""'"); 
+  }
+  arg1 = (ws2811_channel_t *)(argp1);
+  {
+    uint8_t *temp = (uint8_t *)malloc(256 * sizeof(uint8_t));
+    
+    if (PyList_Check(obj1) && PyList_Size(obj1) == 256)
+    {
+      int x;
+      for (x = 0; x < 256; x++) {
+        PyObject *obj = PyList_GetItem(obj1, x);
+        if (PyInt_Check(obj)) {
+          temp[x] = (uint8_t)PyInt_AsLong(obj);
+        }
+        else
+        {
+          SWIG_exception_fail(SWIG_TypeError, "Expected list of 256 integer gamma values in ws2811_channel_t_gamma_set");
+        }
+      }
+      arg2 = &temp[0];
+    }
+    else
+    {
+      SWIG_exception_fail(SWIG_TypeError, "Expected list of 256 gamma integer values in ws2811_channel_t_gamma_set");
+    }
+  }
+  {
+    if (arg2) {
+      size_t ii = 0;
+      for (; ii < (size_t)256; ++ii) *(uint8_t *)&arg1->gamma[ii] = *((uint8_t *)arg2 + ii);
+    } else {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in variable '""gamma""' of type '""uint8_t [256]""'");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_ws2811_channel_t_gamma_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  ws2811_channel_t *arg1 = (ws2811_channel_t *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  uint8_t *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:ws2811_channel_t_gamma_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_ws2811_channel_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ws2811_channel_t_gamma_get" "', argument " "1"" of type '" "ws2811_channel_t *""'"); 
+  }
+  arg1 = (ws2811_channel_t *)(argp1);
+  result = (uint8_t *)(uint8_t *) ((arg1)->gamma);
+  {
+    resultobj = PyList_New(256);
+    int x;
+    for(x = 0; x < 256; x++){
+      PyList_SetItem(resultobj, x, PyInt_FromLong(result[x]));
+    }
+  }
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_new_ws2811_channel_t(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   ws2811_channel_t *result = 0 ;
@@ -4408,6 +4489,8 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"ws2811_channel_t_gshift_get", _wrap_ws2811_channel_t_gshift_get, METH_VARARGS, NULL},
 	 { (char *)"ws2811_channel_t_bshift_set", _wrap_ws2811_channel_t_bshift_set, METH_VARARGS, NULL},
 	 { (char *)"ws2811_channel_t_bshift_get", _wrap_ws2811_channel_t_bshift_get, METH_VARARGS, NULL},
+	 { (char *)"ws2811_channel_t_gamma_set", _wrap_ws2811_channel_t_gamma_set, METH_VARARGS, NULL},
+	 { (char *)"ws2811_channel_t_gamma_get", _wrap_ws2811_channel_t_gamma_get, METH_VARARGS, NULL},
 	 { (char *)"new_ws2811_channel_t", _wrap_new_ws2811_channel_t, METH_VARARGS, NULL},
 	 { (char *)"delete_ws2811_channel_t", _wrap_delete_ws2811_channel_t, METH_VARARGS, NULL},
 	 { (char *)"ws2811_channel_t_swigregister", ws2811_channel_t_swigregister, METH_VARARGS, NULL},
