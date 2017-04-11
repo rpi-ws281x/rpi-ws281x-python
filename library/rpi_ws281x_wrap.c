@@ -2960,6 +2960,30 @@ static swig_module_info swig_module = {swig_types, 14, 0, 0, 0, 0};
 #include <stdint.h>		// Use the C99 official header
 
 
+static int convert_iarray(PyObject *input, uint8_t *ptr, int size) {
+  int i;
+  if (!PySequence_Check(input)) {
+      PyErr_SetString(PyExc_TypeError,"Expecting a sequence");
+      return 0;
+  }
+  if (PyObject_Length(input) != size) {
+      PyErr_SetString(PyExc_ValueError,"Sequence size mismatch");
+      return 0;
+  }
+  for (i =0; i < size; i++) {
+      PyObject *o = PySequence_GetItem(input,i);
+      if (!PyInt_Check(o)) {
+         Py_XDECREF(o);
+         PyErr_SetString(PyExc_ValueError,"Expecting a sequence of floats");
+         return 0;
+      }
+      ptr[i] = PyInt_AsLong(o);
+      Py_DECREF(o);
+  }
+  return 1;
+}
+
+
 #include "lib/ws2811.h"
 
 
@@ -3832,6 +3856,7 @@ SWIGINTERN PyObject *_wrap_ws2811_channel_t_gamma_set(PyObject *SWIGUNUSEDPARM(s
   uint8_t *arg2 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
+  uint8_t temp2[256] ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
@@ -3842,27 +3867,10 @@ SWIGINTERN PyObject *_wrap_ws2811_channel_t_gamma_set(PyObject *SWIGUNUSEDPARM(s
   }
   arg1 = (ws2811_channel_t *)(argp1);
   {
-    uint8_t *temp = (uint8_t *)malloc(256 * sizeof(uint8_t));
-    
-    if (PyList_Check(obj1) && PyList_Size(obj1) == 256)
-    {
-      int x;
-      for (x = 0; x < 256; x++) {
-        PyObject *obj = PyList_GetItem(obj1, x);
-        if (PyInt_Check(obj)) {
-          temp[x] = (uint8_t)PyInt_AsLong(obj);
-        }
-        else
-        {
-          SWIG_exception_fail(SWIG_TypeError, "Expected list of 256 integer gamma values in ws2811_channel_t_gamma_set");
-        }
-      }
-      arg2 = &temp[0];
+    if (!convert_iarray(obj1,temp2,256)) {
+      return NULL;
     }
-    else
-    {
-      SWIG_exception_fail(SWIG_TypeError, "Expected list of 256 gamma integer values in ws2811_channel_t_gamma_set");
-    }
+    arg2 = &temp2[0];
   }
   {
     if (arg2) {

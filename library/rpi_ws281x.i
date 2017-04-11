@@ -18,29 +18,37 @@
   }
 }
 
-%typemap(in) uint8_t [256] {
-    uint8_t *temp = (uint8_t *)malloc(256 * sizeof(uint8_t));
+%{
+static int convert_iarray(PyObject *input, uint8_t *ptr, int size) {
+  int i;
+  if (!PySequence_Check(input)) {
+      PyErr_SetString(PyExc_TypeError,"Expecting a sequence");
+      return 0;
+  }
+  if (PyObject_Length(input) != size) {
+      PyErr_SetString(PyExc_ValueError,"Sequence size mismatch");
+      return 0;
+  }
+  for (i =0; i < size; i++) {
+      PyObject *o = PySequence_GetItem(input,i);
+      if (!PyInt_Check(o)) {
+         Py_XDECREF(o);
+         PyErr_SetString(PyExc_ValueError,"Expecting a sequence of floats");
+         return 0;
+      }
+      ptr[i] = PyInt_AsLong(o);
+      Py_DECREF(o);
+  }
+  return 1;
+}
+%}
 
-    if (PyList_Check($input) && PyList_Size($input) == 256)
-    {
-        int x;
-        for (x = 0; x < 256; x++) {
-            PyObject *obj = PyList_GetItem($input, x);
-            if (PyInt_Check(obj)) {
-                temp[x] = (uint8_t)PyInt_AsLong(obj);
-            }
-            else
-            {
-                SWIG_exception_fail(SWIG_TypeError, "Expected list of 256 integer gamma values in $symname");
-            }
-        }
-        $1 = &temp[0];
-    }
-    else
-    {
-        SWIG_exception_fail(SWIG_TypeError, "Expected list of 256 gamma integer values in $symname");
-    }
-};
+%typemap(in) uint8_t [256](uint8_t temp[256]) {
+   if (!convert_iarray($input,temp,256)) {
+      return NULL;
+   }
+   $1 = &temp[0];
+}
 
 // Declare functions which will be exported as anything in the ws2811.h header.
 %{

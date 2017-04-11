@@ -62,6 +62,8 @@ class PixelStrip(object):
         if gamma is None:
             gamma = list(range(256))
 
+        self._gamma = gamma
+
         # Keep track of successful init so we don't call ws2811_fini unecessarily
         self._init_successful = False
 
@@ -83,7 +85,6 @@ class PixelStrip(object):
         ws.ws2811_channel_t_invert_set(self._channel, 0 if not invert else 1)
         ws.ws2811_channel_t_brightness_set(self._channel, brightness)
         ws.ws2811_channel_t_strip_type_set(self._channel, ws.WS2811_STRIP_GRB)
-        ws.ws2811_channel_t_gamma_set(self._channel, gamma)
 
         # Initialize the controller
         ws.ws2811_t_freq_set(self._leds, freq_hz)
@@ -123,6 +124,8 @@ class PixelStrip(object):
             str_resp = ws.ws2811_get_return_t_str(resp)
             raise RuntimeError('ws2811_init failed with code {0} ({1})'.format(resp, str_resp))
 
+        ws.ws2811_channel_t_gamma_set(self._channel, self._gamma)
+        print(ws.ws2811_channel_t_gamma_get(self._channel))
         self._init_successful = True
 
     def show(self):
