@@ -80,6 +80,7 @@ class PixelStrip(object):
 
         # Initialize the channel in use
         self._channel = ws.ws2811_channel_get(self._leds, channel)
+        ws.ws2811_channel_t_gamma_set(self._channel, self._gamma)
         ws.ws2811_channel_t_count_set(self._channel, num)
         ws.ws2811_channel_t_gpionum_set(self._channel, pin)
         ws.ws2811_channel_t_invert_set(self._channel, 0 if not invert else 1)
@@ -124,8 +125,6 @@ class PixelStrip(object):
             str_resp = ws.ws2811_get_return_t_str(resp)
             raise RuntimeError('ws2811_init failed with code {0} ({1})'.format(resp, str_resp))
 
-        ws.ws2811_channel_t_gamma_set(self._channel, self._gamma)
-        print(ws.ws2811_channel_t_gamma_get(self._channel))
         self._init_successful = True
 
     def show(self):

@@ -3853,7 +3853,7 @@ fail:
 SWIGINTERN PyObject *_wrap_ws2811_channel_t_gamma_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   ws2811_channel_t *arg1 = (ws2811_channel_t *) 0 ;
-  uint8_t *arg2 ;
+  uint8_t *arg2 = (uint8_t *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
   uint8_t temp2[256] ;
@@ -3870,16 +3870,13 @@ SWIGINTERN PyObject *_wrap_ws2811_channel_t_gamma_set(PyObject *SWIGUNUSEDPARM(s
     if (!convert_iarray(obj1,temp2,256)) {
       return NULL;
     }
-    arg2 = &temp2[0];
-  }
-  {
-    if (arg2) {
-      size_t ii = 0;
-      for (; ii < (size_t)256; ++ii) *(uint8_t *)&arg1->gamma[ii] = *((uint8_t *)arg2 + ii);
-    } else {
-      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in variable '""gamma""' of type '""uint8_t [256]""'");
+    arg2 = malloc(sizeof(uint8_t) * 256);
+    int n;
+    for(n = 0; n < 256; n++){
+      arg2[n] = temp2[n];
     }
   }
+  if (arg1) (arg1)->gamma = arg2;
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3901,7 +3898,7 @@ SWIGINTERN PyObject *_wrap_ws2811_channel_t_gamma_get(PyObject *SWIGUNUSEDPARM(s
     SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ws2811_channel_t_gamma_get" "', argument " "1"" of type '" "ws2811_channel_t *""'"); 
   }
   arg1 = (ws2811_channel_t *)(argp1);
-  result = (uint8_t *)(uint8_t *) ((arg1)->gamma);
+  result = (uint8_t *) ((arg1)->gamma);
   {
     resultobj = PyList_New(256);
     int x;

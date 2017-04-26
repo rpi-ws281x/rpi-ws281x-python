@@ -10,7 +10,7 @@
 %include "stdint.i"
 %include "carrays.i"
 
-%typemap(out) uint8_t [256] {
+%typemap(out) uint8_t * {
   $result = PyList_New(256);
   int x;
   for(x = 0; x < 256; x++){
@@ -43,11 +43,15 @@ static int convert_iarray(PyObject *input, uint8_t *ptr, int size) {
 }
 %}
 
-%typemap(in) uint8_t [256](uint8_t temp[256]) {
+%typemap(in) uint8_t * (uint8_t temp[256]) {
    if (!convert_iarray($input,temp,256)) {
       return NULL;
    }
-   $1 = &temp[0];
+   $1 = malloc(sizeof(uint8_t) * 256);
+   int n;
+   for(n = 0; n < 256; n++){
+     $1[n] = temp[n];
+   }
 }
 
 // Declare functions which will be exported as anything in the ws2811.h header.
