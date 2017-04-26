@@ -3856,7 +3856,6 @@ SWIGINTERN PyObject *_wrap_ws2811_channel_t_gamma_set(PyObject *SWIGUNUSEDPARM(s
   uint8_t *arg2 = (uint8_t *) 0 ;
   void *argp1 = 0 ;
   int res1 = 0 ;
-  uint8_t temp2[256] ;
   PyObject * obj0 = 0 ;
   PyObject * obj1 = 0 ;
   
@@ -3867,13 +3866,15 @@ SWIGINTERN PyObject *_wrap_ws2811_channel_t_gamma_set(PyObject *SWIGUNUSEDPARM(s
   }
   arg1 = (ws2811_channel_t *)(argp1);
   {
-    if (!convert_iarray(obj1,temp2,256)) {
-      return NULL;
-    }
+    /* As a consequence of this malloc, I believe there's a potential memory leak
+       /  which would occur if gamma is set more than once.
+       /  The gamma value is only freed once at cleanup.
+       /  Using a typemap is also risky here, since it would apply to all *uint8_t,
+       /  this type is presently only used for the gamma table.
+       */
     arg2 = malloc(sizeof(uint8_t) * 256);
-    int n;
-    for(n = 0; n < 256; n++){
-      arg2[n] = temp2[n];
+    if (!convert_iarray(obj1,arg2,256)) {
+      return NULL;
     }
   }
   if (arg1) (arg1)->gamma = arg2;

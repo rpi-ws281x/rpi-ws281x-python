@@ -43,14 +43,16 @@ static int convert_iarray(PyObject *input, uint8_t *ptr, int size) {
 }
 %}
 
-%typemap(in) uint8_t * (uint8_t temp[256]) {
-   if (!convert_iarray($input,temp,256)) {
-      return NULL;
-   }
+%typemap(in) uint8_t * {
+   /* As a consequence of this malloc, I believe there's a potential memory leak
+   /  which would occur if gamma is set more than once.
+   /  The gamma value is only freed once at cleanup.
+   /  Using a typemap is also risky here, since it would apply to all *uint8_t,
+   /  this type is presently only used for the gamma table.
+   */
    $1 = malloc(sizeof(uint8_t) * 256);
-   int n;
-   for(n = 0; n < 256; n++){
-     $1[n] = temp[n];
+   if (!convert_iarray($input,$1,256)) {
+      return NULL;
    }
 }
 
