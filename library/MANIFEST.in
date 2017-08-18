@@ -8,3 +8,4 @@ include neopixel/*.py
 include rpi_ws281x/*.py
 include README.md
 include LICENSE
+include Makefile
