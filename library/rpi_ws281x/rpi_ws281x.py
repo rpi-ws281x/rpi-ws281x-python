@@ -115,6 +115,11 @@ class PixelStrip(object):
             self._channel = None
             # Note that ws2811_fini will free the memory used by led_data internally.
 
+    def setGamma(self, gamma):
+        if type(gamma) is list and len(gamma) == 256:
+            self._gamma = gamma
+            ws.ws2811_channel_t_gamma_set(self._channel, self._gamma)
+
     def begin(self):
         """Initialize library, must be called once before other functions are
         called.
