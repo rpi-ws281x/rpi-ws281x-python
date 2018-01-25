@@ -49,12 +49,12 @@ class _LED_Data(object):
 
 
 class PixelStrip(object):
-    def __init__(self, num, pin, freq_hz=800000, dma=5, invert=False, brightness=128, channel=0, gamma=None):
+    def __init__(self, num, pin, freq_hz=800000, dma=10, invert=False, brightness=128, channel=0, gamma=None):
         """Class to represent a SK6812/WS281x LED display.  Num should be the
         number of pixels in the display, and pin should be the GPIO pin connected
         to the display signal line (must be a PWM pin like 18!).  Optional
         parameters are freq, the frequency of the display signal in hertz (default
-        800khz), dma, the DMA channel to use (default 5), invert, a boolean
+        800khz), dma, the DMA channel to use (default 10), invert, a boolean
         specifying if the signal line should be inverted (default False), and
         channel, the PWM channel to use (defaults to 0).
         """
