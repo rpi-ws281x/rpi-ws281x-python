@@ -64,9 +64,6 @@ class PixelStrip(object):
 
         self._gamma = gamma
 
-        # Keep track of successful init so we don't call ws2811_fini unecessarily
-        self._init_successful = False
-
         # Create ws2811_t structure and fill in parameters.
         self._leds = ws.new_ws2811_t()
 
@@ -97,23 +94,12 @@ class PixelStrip(object):
         # Substitute for __del__, traps an exit condition and cleans up properly
         atexit.register(self._cleanup)
 
-    def __del__(self):
-        # Required because Python will complain about memory leaks
-        # However there's no guarantee that "ws" will even be set
-        # when the __del__ method for this class is reached.
-        if ws != None:
-            self._cleanup()
-
     def _cleanup(self):
         # Clean up memory used by the library when not needed anymore.
         if self._leds is not None:
-            if self._init_successful:
-                ws.ws2811_fini(self._leds)
-
             ws.delete_ws2811_t(self._leds)
             self._leds = None
             self._channel = None
-            # Note that ws2811_fini will free the memory used by led_data internally.
 
     def setGamma(self, gamma):
         if type(gamma) is list and len(gamma) == 256:
@@ -129,8 +115,6 @@ class PixelStrip(object):
         if resp != 0:
             str_resp = ws.ws2811_get_return_t_str(resp)
             raise RuntimeError('ws2811_init failed with code {0} ({1})'.format(resp, str_resp))
-
-        self._init_successful = True
 
     def show(self):
         """Update the display with the data from the LED buffer."""
