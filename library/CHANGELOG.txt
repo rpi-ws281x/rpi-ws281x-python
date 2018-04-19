@@ -1,0 +1,11 @@
+3.1.0
+-----
+
+* New: Exposed all contents of ws for easy access to strip_type constants
+* Fix: Matched functionality of upstream legacy library by supporting strip_type
+* Note: Default strip type is WS2811_STRIP_GRB
+
+3.0.7
+-----
+
+* New: Added support for Pi 3B+

@@ -49,7 +49,8 @@ class _LED_Data(object):
 
 
 class PixelStrip(object):
-    def __init__(self, num, pin, freq_hz=800000, dma=10, invert=False, brightness=128, channel=0, gamma=None):
+    def __init__(self, num, pin, freq_hz=800000, dma=10, invert=False,
+            brightness=255, channel=0, strip_type=None, gamma=None):
         """Class to represent a SK6812/WS281x LED display.  Num should be the
         number of pixels in the display, and pin should be the GPIO pin connected
         to the display signal line (must be a PWM pin like 18!).  Optional
@@ -60,9 +61,16 @@ class PixelStrip(object):
         """
 
         if gamma is None:
-            gamma = list(range(256))
+            # Support gamma in place of strip_type for back-compat with
+            # previous version of forked library
+            if type(strip_type) is list and len(strip_type) == 256:
+                gamma = strip_type
+                strip_type = None
+            else:
+                gamma = list(range(256))
 
-        self._gamma = gamma
+        if strip_type is None:
+            strip_type = ws.WS2811_STRIP_GRB
 
         # Create ws2811_t structure and fill in parameters.
         self._leds = ws.new_ws2811_t()
@@ -77,12 +85,12 @@ class PixelStrip(object):
 
         # Initialize the channel in use
         self._channel = ws.ws2811_channel_get(self._leds, channel)
-        ws.ws2811_channel_t_gamma_set(self._channel, self._gamma)
+        ws.ws2811_channel_t_gamma_set(self._channel, gamma)
         ws.ws2811_channel_t_count_set(self._channel, num)
         ws.ws2811_channel_t_gpionum_set(self._channel, pin)
         ws.ws2811_channel_t_invert_set(self._channel, 0 if not invert else 1)
         ws.ws2811_channel_t_brightness_set(self._channel, brightness)
-        ws.ws2811_channel_t_strip_type_set(self._channel, ws.WS2811_STRIP_GRB)
+        ws.ws2811_channel_t_strip_type_set(self._channel, strip_type)
 
         # Initialize the controller
         ws.ws2811_t_freq_set(self._leds, freq_hz)
@@ -103,8 +111,7 @@ class PixelStrip(object):
 
     def setGamma(self, gamma):
         if type(gamma) is list and len(gamma) == 256:
-            self._gamma = gamma
-            ws.ws2811_channel_t_gamma_set(self._channel, self._gamma)
+            ws.ws2811_channel_t_gamma_set(self._channel, gamma)
 
     def begin(self):
         """Initialize library, must be called once before other functions are

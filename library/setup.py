@@ -17,12 +17,13 @@ class CustomInstallCommand(build_py):
         build_py.run(self)
 
 setup(name              = 'rpi_ws281x',
-      version           = '3.0.6',
+      version           = '3.1.0',
       author            = 'Jeremy Garff <jer@jers.net>, Phil Howard <phil@pimoroni.com>',
-      author_email      = 'jer@jers.net',
+      author_email      = 'jer@jers.net, phil@pimoroni.com',
       description       = 'Userspace Raspberry Pi PWM/PCM/SPI library for SK6812 and WS281X LEDs.',
+      long_description  = open('README.rst').read() + "\n" + open('CHANGELOG.txt').read(),
       license           = 'MIT',
-      url               = 'https://github.com/pimoroni/rpi_ws281x-python/',
+      url               = 'https://github.com/rpi-ws281x/rpi-ws281x-python/',
       cmdclass          = {'build_py':CustomInstallCommand},
       packages          = ['neopixel', 'rpi_ws281x'],
       ext_modules       = [Extension('_rpi_ws281x', 
