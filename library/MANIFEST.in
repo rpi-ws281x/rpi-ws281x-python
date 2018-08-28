@@ -4,7 +4,6 @@ include lib/LICENSE
 include version.h
 include setup.py
 include rpi_ws281x_wrap.c
-include neopixel/*.py
 include rpi_ws281x/*.py
 include README.rst
 include CHANGELOG.txt
