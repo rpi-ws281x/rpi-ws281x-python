@@ -17,7 +17,7 @@ class CustomInstallCommand(build_py):
         build_py.run(self)
 
 setup(name              = 'rpi_ws281x',
-      version           = '3.1.0',
+      version           = '4.0.0',
       author            = 'Jeremy Garff <jer@jers.net>, Phil Howard <phil@pimoroni.com>',
       author_email      = 'jer@jers.net, phil@pimoroni.com',
       description       = 'Userspace Raspberry Pi PWM/PCM/SPI library for SK6812 and WS281X LEDs.',

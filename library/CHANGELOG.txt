@@ -1,3 +1,8 @@
+4.0.0
+-----
+
+* Warning: Removed "neopixel" module from this library, use "rpi_ws281x" instead, see #8
+
 3.1.0
 -----
 
