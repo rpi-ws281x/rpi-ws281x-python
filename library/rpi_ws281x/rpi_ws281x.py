@@ -4,12 +4,12 @@ import _rpi_ws281x as ws
 import atexit
 
 
-def Color(red, green, blue):
+def Color(red, green, blue, white=0):
     """Convert the provided red, green, blue color to a 24-bit color value.
     Each color component should be a value 0-255 where 0 is the lowest intensity
     and 255 is the highest intensity.
     """
-    return (red << 16) | (green << 8) | blue
+    return (white << 24) | (red << 16) | (green << 8) | blue
 
 
 class _LED_Data(object):
@@ -135,12 +135,12 @@ class PixelStrip(object):
         """
         self._led_data[n] = color
 
-    def setPixelColorRGB(self, n, red, green, blue):
+    def setPixelColorRGB(self, n, red, green, blue, white=0):
         """Set LED at position n to the provided red, green, and blue color.
         Each color component should be a value from 0 to 255 (where 0 is the
         lowest intensity and 255 is the highest intensity).
         """
-        self.setPixelColor(n, Color(red, green, blue))
+        self.setPixelColor(n, Color(red, green, blue, white))
 
     def getBrightness(self):
         return ws.ws2811_channel_t_brightness_get(self._channel)
