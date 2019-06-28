@@ -1,3 +1,14 @@
+4.2.0
+-----
+
+* New: Added support for Raspberry Pi 4
+
+4.1.0
+-----
+
+* New: Added support for the Pi 3A+
+* Fix: Bugfix for ARM64 support
+
 4.0.0
 -----
 
