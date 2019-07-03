@@ -1,3 +1,10 @@
+4.2.2
+-----
+
+* Fix: Fixed Slice support when setting pixels
+* New: Added support for Revision 0xa02083
+* New: Added support for Revision 0xa22083
+
 4.2.1
 -----
 
