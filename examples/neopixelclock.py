@@ -8,15 +8,14 @@
 
 import time
 import datetime
-import math
 
-from rpi_ws281x import *
+from rpi_ws281x import Adafruit_NeoPixel, Color
 
 # LED strip configuration:
-LED_COUNT = 12      # Number of LED pixels.
-LED_PIN = 18      # GPIO pin connected to the pixels (must support PWM!).
+LED_COUNT = 12        # Number of LED pixels.
+LED_PIN = 18          # GPIO pin connected to the pixels (must support PWM!).
 LED_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
-LED_DMA = 10       # DMA channel to use for generating signal (try 10)
+LED_DMA = 10          # DMA channel to use for generating signal (try 10)
 LED_BRIGHTNESS = 255  # Set to 0 for darkest and 255 for brightest
 # True to invert the signal (when using NPN transistor level shift)
 LED_INVERT = False
@@ -45,6 +44,7 @@ if __name__ == '__main__':
         second = now.second / 5
         secondmodulo = now.second % 5
         timeslot_in_microseconds = secondmodulo * 1000000 + now.microsecond
+
         for i in range(0, strip.numPixels(), 1):
             secondplusone = second + 1 if(second < 11) else 0
             secondminusone = second - 1 if(second > 0) else 11
@@ -57,6 +57,7 @@ if __name__ == '__main__':
                 else:
                     colorarray[0] = 382 - \
                         int(0.0000508 * timeslot_in_microseconds)
+
             if i == secondplusone:
                 colorarray[0] = int(0.0000256 * timeslot_in_microseconds)
             if i == secondminusone:
@@ -66,7 +67,9 @@ if __name__ == '__main__':
                 colorarray[2] = 200
             if i == hour:
                 colorarray[1] = 200
+
             strip.setPixelColor(
                 i, Color(colorarray[0], colorarray[1], colorarray[2]))
+
         strip.show()
         time.sleep(0.1)

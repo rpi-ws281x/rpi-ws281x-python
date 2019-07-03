@@ -12,32 +12,32 @@ import time
 import _rpi_ws281x as ws
 
 # LED configuration.
-LED_CHANNEL    = 0
-LED_COUNT      = 16         # How many LEDs to light.
-LED_FREQ_HZ    = 800000     # Frequency of the LED signal.  Should be 800khz or 400khz.
-LED_DMA_NUM    = 10         # DMA channel to use, can be 0-14.
-LED_GPIO       = 18         # GPIO connected to the LED signal line.  Must support PWM!
+LED_CHANNEL = 0
+LED_COUNT = 16              # How many LEDs to light.
+LED_FREQ_HZ = 800000        # Frequency of the LED signal.  Should be 800khz or 400khz.
+LED_DMA_NUM = 10            # DMA channel to use, can be 0-14.
+LED_GPIO = 18               # GPIO connected to the LED signal line.  Must support PWM!
 LED_BRIGHTNESS = 255        # Set to 0 for darkest and 255 for brightest
-LED_INVERT     = 0          # Set to 1 to invert the LED signal, good if using NPN
-							# transistor as a 3.3V->5V level converter.  Keep at 0
-							# for a normal/non-inverted signal.
-#LED_STRIP      = ws.WS2811_STRIP_RGB
-#LED_STRIP      = ws.WS2811_STRIP_GBR
-#LED_STRIP      = ws.SK6812_STRIP_RGBW
-LED_STRIP      = ws.SK6812W_STRIP
+LED_INVERT = 0              # Set to 1 to invert the LED signal, good if using NPN
+#                             transistor as a 3.3V->5V level converter.  Keep at 0
+#                             for a normal/non-inverted signal.
+# LED_STRIP = ws.WS2811_STRIP_RGB
+# LED_STRIP = ws.WS2811_STRIP_GBR
+# LED_STRIP = ws.SK6812_STRIP_RGBW
+LED_STRIP = ws.SK6812W_STRIP
 
 
 # Define colors which will be used by the example.  Each color is an unsigned
 # 32-bit value where the lower 24 bits define the red, green, blue data (each
 # being 8 bits long).
-DOT_COLORS = [  0x200000,   # red
-				0x201000,   # orange
-				0x202000,   # yellow
-				0x002000,   # green
-				0x002020,   # lightblue
-				0x000020,   # blue
-				0x100010,   # purple
-				0x200010 ]  # pink
+DOT_COLORS = [0x200000,   # red
+              0x201000,   # orange
+              0x202000,   # yellow
+              0x002000,   # green
+              0x002020,   # lightblue
+              0x000020,   # blue
+              0x100010,   # purple
+              0x200010]   # pink
 
 
 # Create a ws2811_t structure from the LED configuration.
@@ -67,38 +67,38 @@ ws.ws2811_t_dmanum_set(leds, LED_DMA_NUM)
 # Initialize library with LED configuration.
 resp = ws.ws2811_init(leds)
 if resp != ws.WS2811_SUCCESS:
-	message = ws.ws2811_get_return_t_str(resp)
-	raise RuntimeError('ws2811_init failed with code {0} ({1})'.format(resp, message))
+    message = ws.ws2811_get_return_t_str(resp)
+    raise RuntimeError('ws2811_init failed with code {0} ({1})'.format(resp, message))
 
 # Wrap following code in a try/finally to ensure cleanup functions are called
 # after library is initialized.
 try:
-	offset = 0
-	while True:
-		# Update each LED color in the buffer.
-		for i in range(LED_COUNT):
-			# Pick a color based on LED position and an offset for animation.
-			color = DOT_COLORS[(i + offset) % len(DOT_COLORS)]
+    offset = 0
+    while True:
+        # Update each LED color in the buffer.
+        for i in range(LED_COUNT):
+            # Pick a color based on LED position and an offset for animation.
+            color = DOT_COLORS[(i + offset) % len(DOT_COLORS)]
 
-			# Set the LED color buffer value.
-			ws.ws2811_led_set(channel, i, color)
+            # Set the LED color buffer value.
+            ws.ws2811_led_set(channel, i, color)
 
-		# Send the LED color data to the hardware.
-		resp = ws.ws2811_render(leds)
-		if resp != ws.WS2811_SUCCESS:
-			message = ws.ws2811_get_return_t_str(resp)
-			raise RuntimeError('ws2811_render failed with code {0} ({1})'.format(resp, message))
+        # Send the LED color data to the hardware.
+        resp = ws.ws2811_render(leds)
+        if resp != ws.WS2811_SUCCESS:
+            message = ws.ws2811_get_return_t_str(resp)
+            raise RuntimeError('ws2811_render failed with code {0} ({1})'.format(resp, message))
 
-		# Delay for a small period of time.
-		time.sleep(0.25)
+        # Delay for a small period of time.
+        time.sleep(0.25)
 
-		# Increase offset to animate colors moving.  Will eventually overflow, which
-		# is fine.
-		offset += 1
+        # Increase offset to animate colors moving.  Will eventually overflow, which
+        # is fine.
+        offset += 1
 
 finally:
-	# Ensure ws2811_fini is called before the program quits.
-	ws.ws2811_fini(leds)
-	# Example of calling delete function to clean up structure memory.  Isn't
-	# strictly necessary at the end of the program execution here, but is good practice.
-	ws.delete_ws2811_t(leds)
+    # Ensure ws2811_fini is called before the program quits.
+    ws.ws2811_fini(leds)
+    # Example of calling delete function to clean up structure memory.  Isn't
+    # strictly necessary at the end of the program execution here, but is good practice.
+    ws.delete_ws2811_t(leds)
