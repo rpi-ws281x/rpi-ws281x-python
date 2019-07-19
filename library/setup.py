@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # Python wrapper for the rpi_ws281x library.
 # Authors:
 #    Phil Howard (phil@pimoroni.com)
