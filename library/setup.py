@@ -1,19 +1,15 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # Python wrapper for the rpi_ws281x library.
 # Authors:
-#    Phil Howard (phil@pimoroni.com) 
+#    Phil Howard (phil@pimoroni.com)
 #    Tony DiCola (tony@tonydicola.com)
 
 from setuptools import setup, find_packages, Extension
 from setuptools.command.build_py import build_py
-import subprocess
 
 class CustomInstallCommand(build_py):
-    """Customized install to run library Makefile"""
     def run(self):
         print("Compiling ws281x library...")
-        proc =subprocess.Popen(["make"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print(proc.stderr.read())
         build_py.run(self)
 
 setup(name              = 'rpi_ws281x',
@@ -26,8 +22,13 @@ setup(name              = 'rpi_ws281x',
       url               = 'https://github.com/rpi-ws281x/rpi-ws281x-python/',
       cmdclass          = {'build_py':CustomInstallCommand},
       packages          = ['rpi_ws281x'],
-      ext_modules       = [Extension('_rpi_ws281x', 
-                                     sources=['rpi_ws281x_wrap.c'],
-                                     include_dirs=['lib/'],
-                                     library_dirs=['lib-built/'],
-                                     libraries=['ws2811'])])
+      ext_modules       = [Extension('_rpi_ws281x',
+                                     include_dirs = ['.'],
+                                     sources = ['rpi_ws281x_wrap.c',
+                                              'lib/dma.c',
+                                              'lib/mailbox.c',
+                                              'lib/main.c',
+                                              'lib/pcm.c',
+                                              'lib/pwm.c',
+                                              'lib/rpihw.c',
+                                              'lib/ws2811.c'])])
