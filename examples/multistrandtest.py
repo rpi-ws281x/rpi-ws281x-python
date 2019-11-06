@@ -51,7 +51,7 @@ def multiColorWipe(color1, color2, wait_ms=5):
 
 
 def blackout(strip):
-    for i in range(max(strip1.numPixels(), strip1.numPixels())):
+    for i in range(max(strip.numPixels(), strip.numPixels())):
         strip.setPixelColor(i, Color(0, 0, 0))
         strip.show()
 
