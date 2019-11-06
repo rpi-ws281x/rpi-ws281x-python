@@ -1,3 +1,8 @@
+4.2.3
+-----
+
+* Fix: Added support for Pi 4 Rev 1.2 - 0xa03112, 0xb03112, 0xc03112
+
 4.2.2
 -----
 
