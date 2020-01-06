@@ -151,6 +151,15 @@ following line to /boot/config.txt and reboot.
 
         core_freq=250
 
+On a RPi 4 its dynamic frequency clocking has to be disabled, since it will
+desync the SPI clock. Do this by adding this line to
+``/boot/config.txt``. (``core_freq`` does not have to be changed, since
+the default value of 500MHz is SPI compatible)
+
+::
+
+        core_freq_min=500
+
 SPI requires you to be in the ``gpio`` group if you wish to control your
 LEDs without root.
 
