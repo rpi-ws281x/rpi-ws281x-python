@@ -130,7 +130,7 @@ When using PCM you cannot use digital audio devices which use I2S since
 I2S uses the PCM hardware, but you can use analog audio.
 
 SPI
-~~
+~~~
 
 When using SPI the ledstring is the only device which can be connected
 to the SPI bus. Both digital (I2S/PCM) and analog (PWM) audio can be
