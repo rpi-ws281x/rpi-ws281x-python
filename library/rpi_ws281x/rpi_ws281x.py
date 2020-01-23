@@ -111,7 +111,7 @@ class PixelStrip(object):
     def _cleanup(self):
         # Clean up memory used by the library when not needed anymore.
         if self._leds is not None:
-            ws.ws2811_fini(self.leds)
+            ws.ws2811_fini(self._leds)
             ws.delete_ws2811_t(self._leds)
             self._leds = None
             self._channel = None
