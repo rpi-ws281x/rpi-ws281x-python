@@ -178,6 +178,14 @@ class PixelStrip(object):
         setattr(c, 'g', self._led_data[n] >> 8  & 0xff)
         setattr(c, 'b', self._led_data[n]    & 0xff)
         return c
+    
+    def getPixelColorRGBW(self, n):
+        c = lambda: None
+        setattr(c, 'w', self._led_data[n] >> 24 & 0xff)
+        setattr(c, 'r', self._led_data[n] >> 16 & 0xff)
+        setattr(c, 'g', self._led_data[n] >> 8  & 0xff)
+        setattr(c, 'b', self._led_data[n]    & 0xff)
+        return c
 
 # Shim for back-compatibility
 class Adafruit_NeoPixel(PixelStrip):
