@@ -1,3 +1,17 @@
+4.2.6
+-----
+
+* New: Added support for Revision 0xc03114 (Pi 4, 4GB v1.4)
+* New: Added support for Revision 0xa03140 (CM4 v1.0 eMMC)
+* New: Added support for Revision 0xb03140 (CM4 v1.0 Lite)
+* New: Added support for Revision 0xc03140 (CM4 v1.0 WiFi)
+
+4.2.5
+-----
+
+* New: Added support for Revision 0xc03130 (Pi 400, 4GB)
+* New: Added support for Revision 0xb03114 (Pi 4, 2GB v1.4)
+
 4.2.4
 -----
 
