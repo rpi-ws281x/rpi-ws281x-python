@@ -36,7 +36,7 @@ def multiColorWipe(color1, color2, wait_ms=5):
         if i % 2:
             # even number
             strip1.setPixelColor(i, color1)
-            strip2.setPixelColor(i / 2, color2)
+            strip2.setPixelColor(int(i / 2), color2)
             strip1.show()
             time.sleep(wait_ms / 1000.0)
             strip2.show()
