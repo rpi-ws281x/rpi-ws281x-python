@@ -1,3 +1,9 @@
+4.3.0
+-----
+
+* Switched to upstream jgarff/rpi_ws281x library
+* New: Added support for Revision 0xd03140 (CM4 v1.0 WiFi)
+
 4.2.6
 -----
 

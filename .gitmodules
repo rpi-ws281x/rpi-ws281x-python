@@ -1,4 +1,4 @@
 [submodule "library/lib"]
 	path = library/lib
-	url = http://github.com/pimoroni/rpi_ws281x
+	url = https://github.com/jgarff/rpi_ws281x/
 	branch = master
