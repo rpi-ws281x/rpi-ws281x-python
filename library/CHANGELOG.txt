@@ -1,3 +1,8 @@
+4.3.1
+-----
+
+* New: Added support for Revision 0x902120 (Pi Zero 2 W v1.0)
+
 4.3.0
 -----
 
