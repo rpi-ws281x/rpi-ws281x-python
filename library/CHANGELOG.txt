@@ -1,3 +1,9 @@
+4.3.2
+-----
+
+* New: Added support for Revision 0xc03131 (Pi 400, 4GB v1.1)
+* New: Added support for Revision 0xb03115 (Pi 4, 2GB v1.5)
+
 4.3.1
 -----
 
