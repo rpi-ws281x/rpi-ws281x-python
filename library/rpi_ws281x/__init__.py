@@ -2,4 +2,4 @@
 from .rpi_ws281x import PixelStrip, Adafruit_NeoPixel, Color, ws
 from _rpi_ws281x import *
 
-__version__ = '4.3.0'
+__version__ = '4.3.3'
