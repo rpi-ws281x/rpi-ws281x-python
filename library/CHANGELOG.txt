@@ -1,3 +1,7 @@
+4.3.4
+
+* New: Added support for Revision 0xa03115 (Pi 4, 1GB v1.5)
+
 4.3.3
 -----
 
