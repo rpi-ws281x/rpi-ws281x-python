@@ -45,16 +45,14 @@ class _LED_Data(object):
         # Handle if a slice of positions are passed in by setting the appropriate
         # LED data values to the provided values.
         if isinstance(pos, slice):
-            index = 0
             for n in xrange(*pos.indices(self.size)):
-                ws.ws2811_led_set(self.channel, n, value[index])
-                index += 1
+                ws.ws2811_led_set(self.channel, n, value)
         # Else assume the passed in value is a number to the position.
         else:
             return ws.ws2811_led_set(self.channel, pos, value)
 
 
-class PixelStrip(object):
+class PixelStrip(_LED_Data):
     def __init__(self, num, pin, freq_hz=800000, dma=10, invert=False,
             brightness=255, channel=0, strip_type=None, gamma=None):
         """Class to represent a SK6812/WS281x LED display.  Num should be the
@@ -91,6 +89,9 @@ class PixelStrip(object):
 
         # Initialize the channel in use
         self._channel = ws.ws2811_channel_get(self._leds, channel)
+
+        super(PixelStrip, self).__init__(self._channel, num)
+
         ws.ws2811_channel_t_gamma_set(self._channel, gamma)
         ws.ws2811_channel_t_count_set(self._channel, num)
         ws.ws2811_channel_t_gpionum_set(self._channel, pin)
