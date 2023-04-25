@@ -18,42 +18,6 @@ def Color(red, green, blue, white=0):
     return (white << 24) | (red << 16) | (green << 8) | blue
 
 
-class _LED_Data(object):
-    """Wrapper class which makes a SWIG LED color data array look and feel like
-    a Python list of integers.
-    """
-    def __init__(self, channel, size):
-        self.size = size
-        self.channel = channel
-
-    def __getitem__(self, pos):
-        """Return the 24-bit RGB color value at the provided position or slice
-        of positions.
-        """
-        # Handle if a slice of positions are passed in by grabbing all the values
-        # and returning them in a list.
-        if isinstance(pos, slice):
-            return [ws.ws2811_led_get(self.channel, n) for n in xrange(*pos.indices(self.size))]
-        # Else assume the passed in value is a number to the position.
-        else:
-            return ws.ws2811_led_get(self.channel, pos)
-
-    def __setitem__(self, pos, value):
-        """Set the 24-bit RGB color value at the provided position or slice of
-        positions.
-        """
-        # Handle if a slice of positions are passed in by setting the appropriate
-        # LED data values to the provided values.
-        if isinstance(pos, slice):
-            index = 0
-            for n in xrange(*pos.indices(self.size)):
-                ws.ws2811_led_set(self.channel, n, value[index])
-                index += 1
-        # Else assume the passed in value is a number to the position.
-        else:
-            return ws.ws2811_led_set(self.channel, pos, value)
-
-
 class PixelStrip(object):
     def __init__(self, num, pin, freq_hz=800000, dma=10, invert=False,
             brightness=255, channel=0, strip_type=None, gamma=None):
@@ -91,6 +55,9 @@ class PixelStrip(object):
 
         # Initialize the channel in use
         self._channel = ws.ws2811_channel_get(self._leds, channel)
+
+        super(PixelStrip, self).__init__(self._channel, num)
+
         ws.ws2811_channel_t_gamma_set(self._channel, gamma)
         ws.ws2811_channel_t_count_set(self._channel, num)
         ws.ws2811_channel_t_gpionum_set(self._channel, pin)
@@ -102,11 +69,35 @@ class PixelStrip(object):
         ws.ws2811_t_freq_set(self._leds, freq_hz)
         ws.ws2811_t_dmanum_set(self._leds, dma)
 
-        # Grab the led data array.
-        self._led_data = _LED_Data(self._channel, num)
+        self.size = num
 
         # Substitute for __del__, traps an exit condition and cleans up properly
         atexit.register(self._cleanup)
+
+    def __getitem__(self, pos):
+        """Return the 24-bit RGB color value at the provided position or slice
+        of positions.
+        """
+        # Handle if a slice of positions are passed in by grabbing all the values
+        # and returning them in a list.
+        if isinstance(pos, slice):
+            return [ws.ws2811_led_get(self._channel, n) for n in xrange(*pos.indices(self.size))]
+        # Else assume the passed in value is a number to the position.
+        else:
+            return ws.ws2811_led_get(self._channel, pos)
+
+    def __setitem__(self, pos, value):
+        """Set the 24-bit RGB color value at the provided position or slice of
+        positions.
+        """
+        # Handle if a slice of positions are passed in by setting the appropriate
+        # LED data values to the provided value.
+        if isinstance(pos, slice):
+            for n in xrange(*pos.indices(self.size)):
+                ws.ws2811_led_set(self._channel, n, value)
+        # Else assume the passed in value is a number to the position.
+        else:
+            return ws.ws2811_led_set(self._channel, pos, value)
 
     def _cleanup(self):
         # Clean up memory used by the library when not needed anymore.
@@ -140,7 +131,7 @@ class PixelStrip(object):
     def setPixelColor(self, n, color):
         """Set LED at position n to the provided 24-bit color value (in RGB order).
         """
-        self._led_data[n] = color
+        self[n] = color
 
     def setPixelColorRGB(self, n, red, green, blue, white=0):
         """Set LED at position n to the provided red, green, and blue color.
@@ -162,7 +153,7 @@ class PixelStrip(object):
         """Return an object which allows access to the LED display data as if
         it were a sequence of 24-bit RGB values.
         """
-        return self._led_data
+        return self[:]
 
     def numPixels(self):
         """Return the number of pixels in the display."""
@@ -170,21 +161,21 @@ class PixelStrip(object):
 
     def getPixelColor(self, n):
         """Get the 24-bit RGB color value for the LED at position n."""
-        return self._led_data[n]
+        return self[n]
 
     def getPixelColorRGB(self, n):
         c = lambda: None
-        setattr(c, 'r', self._led_data[n] >> 16 & 0xff)
-        setattr(c, 'g', self._led_data[n] >> 8  & 0xff)
-        setattr(c, 'b', self._led_data[n]    & 0xff)
+        setattr(c, 'r', self[n] >> 16 & 0xff)
+        setattr(c, 'g', self[n] >> 8  & 0xff)
+        setattr(c, 'b', self[n]    & 0xff)
         return c
-    
+
     def getPixelColorRGBW(self, n):
         c = lambda: None
-        setattr(c, 'w', self._led_data[n] >> 24 & 0xff)
-        setattr(c, 'r', self._led_data[n] >> 16 & 0xff)
-        setattr(c, 'g', self._led_data[n] >> 8  & 0xff)
-        setattr(c, 'b', self._led_data[n]    & 0xff)
+        setattr(c, 'w', self[n] >> 24 & 0xff)
+        setattr(c, 'r', self[n] >> 16 & 0xff)
+        setattr(c, 'g', self[n] >> 8  & 0xff)
+        setattr(c, 'b', self[n]    & 0xff)
         return c
 
 # Shim for back-compatibility
