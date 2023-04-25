@@ -4,12 +4,6 @@ import _rpi_ws281x as ws
 import atexit
 
 
-try:
-    xrange(0)
-except NameError:
-    xrange = range
-
-
 def Color(red, green, blue, white=0):
     """Convert the provided red, green, blue color to a 24-bit color value.
     Each color component should be a value 0-255 where 0 is the lowest intensity
@@ -81,7 +75,7 @@ class PixelStrip(object):
         # Handle if a slice of positions are passed in by grabbing all the values
         # and returning them in a list.
         if isinstance(pos, slice):
-            return [ws.ws2811_led_get(self._channel, n) for n in xrange(*pos.indices(self.size))]
+            return [ws.ws2811_led_get(self._channel, n) for n in range(*pos.indices(self.size))]
         # Else assume the passed in value is a number to the position.
         else:
             return ws.ws2811_led_get(self._channel, pos)
@@ -93,7 +87,7 @@ class PixelStrip(object):
         # Handle if a slice of positions are passed in by setting the appropriate
         # LED data values to the provided value.
         if isinstance(pos, slice):
-            for n in xrange(*pos.indices(self.size)):
+            for n in range(*pos.indices(self.size)):
                 ws.ws2811_led_set(self._channel, n, value)
         # Else assume the passed in value is a number to the position.
         else:
