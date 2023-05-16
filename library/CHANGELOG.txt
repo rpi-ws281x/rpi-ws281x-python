@@ -1,4 +1,16 @@
+5.0.0
+-----
+
+* Bumped to rpi_ws281x v1.0.0 (15330cb)
+* Full rpi_ws281x changes: https://github.com/jgarff/rpi_ws281x/compare/9be313f...15330cb
+* New: Added support for Revisions 0xa03141, 0xb03141, 0xc04141, 0xd03141 (CM4)
+* New: Added support for Revision 0xa32082 (Pi 3 B)
+* New: Added support for slices on PixelStrip
+* New: Regenerated SWIG bindings with v4.0.2
+* New: RGBW class for interfacing with pixel values
+
 4.3.4
+-----
 
 * New: Added support for Revision 0xa03115 (Pi 4, 1GB v1.5)
 

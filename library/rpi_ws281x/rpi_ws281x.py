@@ -4,10 +4,30 @@ import _rpi_ws281x as ws
 import atexit
 
 
-try:
-    xrange(0)
-except NameError:
-    xrange = range
+class RGBW(int):
+    def __new__(self, r, g=None, b=None, w=None):
+        if (g, b, w) == (None, None, None):
+            return int.__new__(self, r)
+        else:
+            if w is None:
+                w = 0
+            return int.__new__(self, (w << 24) | (r << 16) | (g << 8) | b)
+
+    @property
+    def r(self):
+        return (self >> 16) & 0xff
+
+    @property
+    def g(self):
+        return (self >> 8) & 0xff
+
+    @property
+    def b(self):
+        return (self) & 0xff
+
+    @property
+    def w(self):
+        return (self >> 24) & 0xff
 
 
 def Color(red, green, blue, white=0):
@@ -15,10 +35,10 @@ def Color(red, green, blue, white=0):
     Each color component should be a value 0-255 where 0 is the lowest intensity
     and 255 is the highest intensity.
     """
-    return (white << 24) | (red << 16) | (green << 8) | blue
+    return RGBW(red, green, blue, white)
 
 
-class PixelStrip(object):
+class PixelStrip:
     def __init__(self, num, pin, freq_hz=800000, dma=10, invert=False,
             brightness=255, channel=0, strip_type=None, gamma=None):
         """Class to represent a SK6812/WS281x LED display.  Num should be the
@@ -56,8 +76,6 @@ class PixelStrip(object):
         # Initialize the channel in use
         self._channel = ws.ws2811_channel_get(self._leds, channel)
 
-        super(PixelStrip, self).__init__(self._channel, num)
-
         ws.ws2811_channel_t_gamma_set(self._channel, gamma)
         ws.ws2811_channel_t_count_set(self._channel, num)
         ws.ws2811_channel_t_gpionum_set(self._channel, pin)
@@ -81,7 +99,7 @@ class PixelStrip(object):
         # Handle if a slice of positions are passed in by grabbing all the values
         # and returning them in a list.
         if isinstance(pos, slice):
-            return [ws.ws2811_led_get(self._channel, n) for n in xrange(*pos.indices(self.size))]
+            return [ws.ws2811_led_get(self._channel, n) for n in range(*pos.indices(self.size))]
         # Else assume the passed in value is a number to the position.
         else:
             return ws.ws2811_led_get(self._channel, pos)
@@ -93,11 +111,14 @@ class PixelStrip(object):
         # Handle if a slice of positions are passed in by setting the appropriate
         # LED data values to the provided value.
         if isinstance(pos, slice):
-            for n in xrange(*pos.indices(self.size)):
+            for n in range(*pos.indices(self.size)):
                 ws.ws2811_led_set(self._channel, n, value)
         # Else assume the passed in value is a number to the position.
         else:
             return ws.ws2811_led_set(self._channel, pos, value)
+
+    def __len__(self):
+        return ws.ws2811_channel_t_count_get(self._channel)
 
     def _cleanup(self):
         # Clean up memory used by the library when not needed anymore.
@@ -157,26 +178,17 @@ class PixelStrip(object):
 
     def numPixels(self):
         """Return the number of pixels in the display."""
-        return ws.ws2811_channel_t_count_get(self._channel)
+        return len(self)
 
     def getPixelColor(self, n):
         """Get the 24-bit RGB color value for the LED at position n."""
         return self[n]
 
     def getPixelColorRGB(self, n):
-        c = lambda: None
-        setattr(c, 'r', self[n] >> 16 & 0xff)
-        setattr(c, 'g', self[n] >> 8  & 0xff)
-        setattr(c, 'b', self[n]    & 0xff)
-        return c
+        return RGBW(self[n])
 
     def getPixelColorRGBW(self, n):
-        c = lambda: None
-        setattr(c, 'w', self[n] >> 24 & 0xff)
-        setattr(c, 'r', self[n] >> 16 & 0xff)
-        setattr(c, 'g', self[n] >> 8  & 0xff)
-        setattr(c, 'b', self[n]    & 0xff)
-        return c
+        return RGBW(self[n])
 
 # Shim for back-compatibility
 class Adafruit_NeoPixel(PixelStrip):
