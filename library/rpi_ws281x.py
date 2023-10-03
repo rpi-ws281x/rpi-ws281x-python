@@ -221,3 +221,7 @@ def ws2811_led_set(channel, lednum, color):
 
 def ws2811_channel_get(ws, channelnum):
     return _rpi_ws281x.ws2811_channel_get(ws, channelnum)
+
+
+def ws2811_render_nogil(ws2811):
+    return _rpi_ws281x.ws2811_render_nogil(ws2811)
