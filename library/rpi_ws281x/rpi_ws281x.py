@@ -149,6 +149,13 @@ class PixelStrip:
             str_resp = ws.ws2811_get_return_t_str(resp)
             raise RuntimeError('ws2811_render failed with code {0} ({1})'.format(resp, str_resp))
 
+    def show_nogil(self):
+        """Update the display with the data from the LED buffer."""
+        resp = ws.ws2811_render_nogil(self._leds)
+        if resp != 0:
+            str_resp = ws.ws2811_get_return_t_str(resp)
+            raise RuntimeError('ws2811_render failed with code {0} ({1})'.format(resp, str_resp))
+
     def setPixelColor(self, n, color):
         """Set LED at position n to the provided 24-bit color value (in RGB order).
         """

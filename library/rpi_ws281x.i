@@ -1,6 +1,8 @@
 // SWIG interface file to define rpi_ws281x library python wrapper.
 // Author: Tony DiCola (tony@tonydicola.com), Jeremy Garff (jer@jers.net)
 
+%nothread;
+
 // Define module name rpi_ws281x.  This will actually be imported under
 // the name _rpi_ws281x following the SWIG & Python conventions.
 %module rpi_ws281x
@@ -92,3 +94,12 @@ static int convert_iarray(PyObject *input, uint8_t *ptr, int size) {
         return &ws->channel[channelnum];
     }
 %}
+
+%thread;
+%inline %{
+    ws2811_return_t ws2811_render_nogil(ws2811_t *ws2811)
+    {
+        return ws2811_render(ws2811);
+    }
+%}
+%nothread;

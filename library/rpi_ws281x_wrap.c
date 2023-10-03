@@ -13,6 +13,7 @@
 #define SWIGPYTHON
 #endif
 
+#define SWIG_PYTHON_THREADS
 #define SWIG_PYTHON_DIRECTOR_NO_VTABLE
 
 /* -----------------------------------------------------------------------------
@@ -3132,6 +3133,12 @@ SWIG_FromCharPtr(const char *cptr)
         return &ws->channel[channelnum];
     }
 
+
+    ws2811_return_t ws2811_render_nogil(ws2811_t *ws2811)
+    {
+        return ws2811_render(ws2811);
+    }
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -4370,6 +4377,33 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_ws2811_render_nogil(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  ws2811_t *arg1 = (ws2811_t *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject *swig_obj[1] ;
+  ws2811_return_t result;
+  
+  if (!args) SWIG_fail;
+  swig_obj[0] = args;
+  res1 = SWIG_ConvertPtr(swig_obj[0], &argp1,SWIGTYPE_p_ws2811_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "ws2811_render_nogil" "', argument " "1"" of type '" "ws2811_t *""'"); 
+  }
+  arg1 = (ws2811_t *)(argp1);
+  {
+    SWIG_PYTHON_THREAD_BEGIN_ALLOW;
+    result = (ws2811_return_t)ws2811_render_nogil(arg1);
+    SWIG_PYTHON_THREAD_END_ALLOW;
+  }
+  resultobj = SWIG_From_int((int)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 static PyMethodDef SwigMethods[] = {
 	 { "SWIG_PyInstanceMethod_New", SWIG_PyInstanceMethod_New, METH_O, NULL},
 	 { "ws2811_channel_t_gpionum_set", _wrap_ws2811_channel_t_gpionum_set, METH_VARARGS, NULL},
@@ -4423,6 +4457,7 @@ static PyMethodDef SwigMethods[] = {
 	 { "ws2811_led_get", _wrap_ws2811_led_get, METH_VARARGS, NULL},
 	 { "ws2811_led_set", _wrap_ws2811_led_set, METH_VARARGS, NULL},
 	 { "ws2811_channel_get", _wrap_ws2811_channel_get, METH_VARARGS, NULL},
+	 { "ws2811_render_nogil", _wrap_ws2811_render_nogil, METH_O, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 
@@ -5263,6 +5298,9 @@ SWIG_init(void) {
   SWIG_Python_SetConstant(d, "WS2811_ERROR_SPI_SETUP",SWIG_From_int((int)(WS2811_ERROR_SPI_SETUP)));
   SWIG_Python_SetConstant(d, "WS2811_ERROR_SPI_TRANSFER",SWIG_From_int((int)(WS2811_ERROR_SPI_TRANSFER)));
   SWIG_Python_SetConstant(d, "WS2811_RETURN_STATE_COUNT",SWIG_From_int((int)(WS2811_RETURN_STATE_COUNT)));
+  
+  /* Initialize threading */
+  SWIG_PYTHON_INITIALIZE_THREADS;
 #if PY_VERSION_HEX >= 0x03000000
   return m;
 #else
