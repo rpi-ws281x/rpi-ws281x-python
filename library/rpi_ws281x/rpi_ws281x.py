@@ -2,7 +2,7 @@
 # Author: Tony DiCola (tony@tonydicola.com), Jeremy Garff (jer@jers.net)
 import _rpi_ws281x as ws
 import atexit
-
+from threading import Lock
 
 class RGBW(int):
     def __new__(self, r, g=None, b=None, w=None):
@@ -49,6 +49,9 @@ class PixelStrip:
         specifying if the signal line should be inverted (default False), and
         channel, the PWM channel to use (defaults to 0).
         """
+
+        self._mutex = Lock()
+        self._render_func = ws.ws2811_render
 
         if gamma is None:
             # Support gamma in place of strip_type for back-compat with
@@ -142,19 +145,17 @@ class PixelStrip:
             str_resp = ws.ws2811_get_return_t_str(resp)
             raise RuntimeError('ws2811_init failed with code {0} ({1})'.format(resp, str_resp))
 
+    def releaseGIL(self, release = True)
+        """Setup option to release GIL during render function."""
+        self._render_func = ws.ws2811_render_nogil if release else ws.ws2811_render
+
     def show(self):
         """Update the display with the data from the LED buffer."""
-        resp = ws.ws2811_render(self._leds)
-        if resp != 0:
-            str_resp = ws.ws2811_get_return_t_str(resp)
-            raise RuntimeError('ws2811_render failed with code {0} ({1})'.format(resp, str_resp))
-
-    def show_nogil(self):
-        """Update the display with the data from the LED buffer."""
-        resp = ws.ws2811_render_nogil(self._leds)
-        if resp != 0:
-            str_resp = ws.ws2811_get_return_t_str(resp)
-            raise RuntimeError('ws2811_render failed with code {0} ({1})'.format(resp, str_resp))
+        with self._mutex:
+            resp = self._render_func(self._leds)
+            if resp != 0:
+                str_resp = ws.ws2811_get_return_t_str(resp)
+                raise RuntimeError('ws2811_render failed with code {0} ({1})'.format(resp, str_resp))
 
     def setPixelColor(self, n, color):
         """Set LED at position n to the provided 24-bit color value (in RGB order).
